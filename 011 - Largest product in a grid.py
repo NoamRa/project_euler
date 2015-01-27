@@ -60,43 +60,77 @@ raw_grid = "\
 01 70 54 71 83 51 54 69 16 92 33 48 61 43 52 01 89 19 67 48 \
 "
 
+
+
+
 def format_grid(raw_grid):
-	grid = raw_grid.split()
-	nums_in_grid = len(grid)
-	rows_and_cols = nums_in_grid**0.5
+	grid_1d = raw_grid.split()
+	nums_in_grid = len(grid_1d)
+	rows_and_cols = int(nums_in_grid**0.5)
 	if rows_and_cols % 1 != 0:
 		print "The grid in not in 1:1 ratio"
 
-	for i in xrange(len(grid)):
-		grid[i] = int(grid[i])                 GRID[20][20]
+	# initialize 2D gri
+	grid_2d = [[0 for x in xrange(rows_and_cols)] for x in xrange(rows_and_cols)]
+	for i in xrange(len(grid_1d) / rows_and_cols):
+		for j in xrange(rows_and_cols):
+			#print i, j
+			grid_2d[i][j] = int(grid_1d[i * rows_and_cols + j])
 	
 
-	return (int(nums_in_grid**0.5), grid)
+	return (int(nums_in_grid**0.5), grid_2d)
 
 
 
 
 def largest_product(raw_grid):
-	rows_and_cols, grid = format_grid(raw_grid)
+	rows_and_cols, grid_2d = format_grid(raw_grid)
 	max_product = -1
-	#print grid
+	max_i, max_j, max_start, max_direction= -1, -1, -1, None
+	#print grid_2d
 	# for rows
-	for i in xrange(0, len(grid)-2, 20):
-		if grid[i] * grid[i+1] * grid[i+2] * grid[i+3] > max_product:
-			max_product = grid[i] * grid[i+1] * grid[i+2] * grid[i+3]
 
-	#for cols
+	for i in xrange(rows_and_cols):
+		for j in xrange(rows_and_cols - 3):
+			product = grid_2d[i][j] * grid_2d[i][j+1] * grid_2d[i][j+2] * grid_2d[i][j+3]
+			if max_product < product:
+				max_product = product
+				max_i, max_j, max_start, max_direction = i, j, grid_2d[i][j], "right"
 
+	# for cols
+	for i in xrange(rows_and_cols - 3):
+		for j in xrange(rows_and_cols):
+			product = grid_2d[i][j] * grid_2d[i+1][j] * grid_2d[i+2][j] * grid_2d[i+3][j]
+			if max_product < product:
+				max_product = product
+				max_i, max_j, max_start, max_direction = i, j, grid_2d[i][j], "down"
 
+	# for diagonally down right
+	for i in xrange(rows_and_cols - 3):
+		for j in xrange(rows_and_cols - 3):
+			product = grid_2d[i][j] * grid_2d[i+1][j+1] * grid_2d[i+2][j+2] * grid_2d[i+3][j+3]
+			if max_product < product:
+				max_product = product
+				max_i, max_j, max_start, max_direction = i, j, grid_2d[i][j], "diagonally down right"
 
+	# for diagonally down left
+	for i in xrange(rows_and_cols - 3):
+		for j in xrange(3, rows_and_cols):
+			product = grid_2d[i][j] * grid_2d[i+1][j-1] * grid_2d[i+2][j-2] * grid_2d[i+3][j-3]
+			if max_product < product:
+				max_product = product
+				max_i, max_j, max_start, max_direction = i, j, grid_2d[i][j], "diagonally down left"
 
-
+	print "start with the number " + str(max_start) + " at " + str(max_i) + ", " + str(max_j) + " and go " + max_direction 
 	return max_product
+
 
 print largest_product(raw_grid)
 
 print "Time elapsed: %5.3f" % (time.time() - start_time)
 
 """
-answer is 
+answer is 70600674
+89, 94, 97, 87
+
 """
