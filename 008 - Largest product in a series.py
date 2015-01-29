@@ -55,10 +55,10 @@ num = "\
 05886116467109405077541002256983155200055935729725\
 71636269561882670428252483600823257530420752963450"
 
-def digit_product(num_slice):
+def digit_product(slice_size):
 	product = 1
-	for i in xrange(len(num_slice)):
-		product = product * int(num_slice[i])
+	for i in xrange(len(slice_size)):
+		product = product * int(slice_size[i])
 	return product
 
 #print digit_product("9989")
