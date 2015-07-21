@@ -14,42 +14,47 @@ import time
 start_time = time.time()
 
 
-grid_size = 3
-grid_sizeX = grid_size
-grid_sizeY = grid_size
-
-if grid_sizeX < grid_sizeY:
-	num_of_digits = len(str(grid_sizeY))+1
-else:
-	num_of_digits = len(str(grid_sizeX))+1
+grid_size = 20
+grid_sizex = grid_size
+grid_sizey = grid_size
 
 
+grid_graph = []
+for x in xrange(grid_sizex+1):
+	grid_graph.append([])
+	for y in xrange(grid_sizey+1):
+		grid_graph[x].append(0)
+		if x == 0:
+			grid_graph[0][y] = 1
 
-grid_graph = {}
-for nodeX in xrange(grid_sizeX+1):
-	x = "%0*d" % (num_of_digits, nodeX)
-	for nodeY in xrange(grid_sizeY+1):
-		y = "%0*d" % (num_of_digits, nodeY)
-		grid_graph[x+","+y] = []
-		# if x is not at end of graph, add arc to right
-		if nodeX < grid_sizeX:
-			grid_graph[x+","+y].append(str("%0*d" % (num_of_digits, nodeX+1))+","+y)
-		
-		# if y is not at end of graph, add arc to down
-		if nodeY < grid_sizeY:
-			grid_graph[x+","+y].append(x+","+str("%0*d" % (num_of_digits, nodeY+1)))
 
-print grid_graph, "    len is:", len(grid_graph)
+# algorithem
+for x in xrange(grid_sizex+1):
+	if x > 0:
+		for y in xrange(grid_sizey+1):
+			if x == y:
+				grid_graph[x][y] = grid_graph[x-1][y]*2
+			else:
+				grid_graph[x][y] = grid_graph[x-1][y]+grid_graph[x][y-1]
 
-for node in grid_graph:
-	x, y = node[:num_of_digits], node[-num_of_digits:]
-	print x,y
 
+# pretty print
+num_of_digits = len(str(grid_graph[x][y]))
+
+for x in xrange(grid_sizex+1):
+	for y in xrange(grid_sizey+1):
+		grid_graph[x][y] = "%0*d" % (num_of_digits, grid_graph[x][y])
+
+for i in grid_graph:
+	print i
+print 
+
+print "answer is:", grid_graph[x][y]
 
 
 print "Time elapsed: %5.3f" % (time.time() - start_time)
 
 """
-answer is 
+answer is 137846528820
 
 """
