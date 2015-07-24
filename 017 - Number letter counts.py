@@ -17,7 +17,6 @@ start_time = time.time()
 
 num = 1000
 
-
 words = {
 	0 : "",
 	1 : "one",
@@ -41,12 +40,12 @@ words = {
 	19 : "nineteen",
 	20 : "twenty",
 	30 : "thirty",
-	40 : "fourty",
+	40 : "forty",
 	50 : "fifty",
 	60 : "sixty",
 	70 : "seventy",
 	80 : "eighty",
-	90 : "nintey",
+	90 : "ninety",
 	100 : "oneHundred",
 	200 : "twoHundred",
 	300 : "threeHundred",
@@ -75,7 +74,7 @@ def split_digits(num):
 		ten = ten + 1
 	num_list = filter(None, num_list)
 	if (ten > 2) and (len(num_list) >= 2):
-		print ten, len(num_list)
+		#print ten, len(num_list)
 		num_list.append("and")
 	
 	return num_list
@@ -83,8 +82,16 @@ def split_digits(num):
 def nums_to_words(num_list):
 	c = 0
 	for i in num_list:
-		print words[i]
+		#print words[i]
 		c = c + len(words[i])
+	
+
+	
+	for i in num_list[::-1]:
+		if len(num_list) > 2:
+			#print i
+			print words[i]
+	
 	print
 	return c
 
@@ -94,7 +101,7 @@ for n in xrange(num):
 	number_word_length = nums_to_words(split_digits(n+1))
 	c = c + number_word_length
 
-print c
+print "The sum of letters counting to", num, "is", c
 
 
 print "Time elapsed: %5.3f" % (time.time() - start_time)
