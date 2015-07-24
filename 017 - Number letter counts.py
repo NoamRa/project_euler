@@ -107,5 +107,5 @@ print "The sum of letters counting to", num, "is", c
 print "Time elapsed: %5.3f" % (time.time() - start_time)
 
 """
-answer is 
+answer is 21124
 """
